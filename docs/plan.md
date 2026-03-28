@@ -10,16 +10,17 @@ A personal project to use the addictiveness of YouTube shorts to help me learn l
 
 ## Stack
 
-React 18, TypeScript, Vite, React Router DOM
+React 19, TypeScript, Vite, React router, Tailwind
 
 ## V1
 
-- [ ] Foundation: Vite + React + TS, Eslint, Prettier, routing
-- [ ] Components: Card, CardProgress, Playlist, ReviewEvent types
-- [ ] Schedule: spaced repetition algorithm, daily limits, queue builder
+- [x] Foundation: Vite + React + TS, Eslint, Prettier, Tailwind, routing
+- [ ] Types: Card, CardProgress, Playlist, ReviewEvent
+- [ ] Static UI: Navbar, Card, Playlist, Study screen — hardcoded data, no state
+- [ ] State: wire up real data, interactions, and spaced repetition algorithm
 - [ ] Playlists: create/rename/delete, add Shorts by URL, bulk import via YouTube playlist
 - [ ] Study: show short, background preload for seamless transition, four-button rating, queue management
-- [ ] UI shell: navbar, mobile drawer, dark mode, responsive layout
+- [ ] UI shell: mobile drawer, dark mode, responsive layout
 
 # V2 ideas
 
