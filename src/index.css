@@ -3,3 +3,7 @@
 @theme {
   --font-sans: "Rubik", sans-serif;
 }
+
+button {
+  cursor: pointer;
+}

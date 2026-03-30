@@ -15,7 +15,6 @@ React 19, TypeScript, Vite, React router, Tailwind
 ## V1
 
 - [x] Foundation: Vite + React + TS, Eslint, Prettier, Tailwind, routing
-- [ ] Types: Card, CardProgress, Playlist, ReviewEvent
 - [ ] Static UI: Navbar, Card, Playlist, Study screen — hardcoded data, no state
 - [ ] State: wire up real data, interactions, and spaced repetition algorithm
 - [ ] Playlists: create/rename/delete, add Shorts by URL, bulk import via YouTube playlist
