@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
-
-type Playlist = {
-  id: string;
-  title: string;
-  shortsCount: number;
-  dueCount: number;
-  shorts: string[];
-  settings: { newLimit: number; reviewLimit: number };
-};
+import extractShortId from "../extractShortId";
+import type { Playlist } from "../../../types/types";
 
 type Props = {
   playlist: Playlist;
@@ -17,6 +10,7 @@ type Props = {
   onDeletePlaylist: (playlistId: string) => void;
   onUpdateNewLimit: (newLimit: number, playlistId: string) => void;
   onUpdateReviewLimit: (newLimit: number, playlistId: string) => void;
+  onRenamePlaylist: (newTitle: string, playlistId: string) => void;
 };
 
 export default function PlaylistCard({
@@ -26,6 +20,7 @@ export default function PlaylistCard({
   onDeletePlaylist,
   onUpdateNewLimit,
   onUpdateReviewLimit,
+  onRenamePlaylist,
 }: Props) {
   const [openBox, setOpenBox] = useState<
     "add" | "manage" | "settings" | "delete" | null
@@ -35,10 +30,19 @@ export default function PlaylistCard({
   const [newPlaylistUrl, setPlaylistUrl] = useState<string>("");
   const [newLimit, setNewLimit] = useState<string>("");
   const [reviewLimit, setReviewLimit] = useState<string>("");
+  const [currentTitle, setCurrentTitle] = useState<string>(playlist.title);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [addShortError, setAddShortError] = useState<string>("");
 
-  function addShort(segment: string, playlistId: string) {
-    console.log(`Adding ${segment} ti ${playlistId}`);
-    onAddShort(segment, playlistId);
+  function addShort(url: string, playlistId: string) {
+    const shortId = extractShortId(url);
+    if (!shortId) {
+      setAddShortError("Enter a valid YouTube Shorts URL.");
+    } else {
+      setAddShortError("");
+      console.log(`Adding ${url} to ${playlistId}`);
+      onAddShort(shortId, playlistId);
+    }
   }
 
   function importPlaylist(playlistUrl: string) {
@@ -65,89 +69,139 @@ export default function PlaylistCard({
     onDeletePlaylist(playlistId);
   }
 
+  function renamePlaylist(newTitle: string, playlistId: string) {
+    console.log(`Renaming ${playlist.title} t0 ${newTitle}`);
+    onRenamePlaylist(newTitle, playlistId);
+  }
+
   return (
     <>
       <div className="flex flex-col">
-        <div className="card-top border flex flex-col p-4">
-          <div className="border p-4">
-            <form className="name-playlist">
-              <input className="border" />
-              <button className="border">Save</button>
-              <button className="border">Cancel</button>
-            </form>
-            <span className="playlist-title">{playlist.title}</span>
+        <div className="card-top border flex flex-col p-2">
+          <div className="p-2">
+            {isEditing ? (
+              <div className="name-playlist flex gap-2">
+                <input
+                  value={currentTitle}
+                  className="border-b focus:outline-none flex-1"
+                  onChange={(e) => setCurrentTitle(e.target.value)}
+                />
+                <button
+                  className="border px-2"
+                  onClick={() => {
+                    renamePlaylist(currentTitle, playlist.id);
+                    setIsEditing(false);
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  className="border px-2"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <span
+                className="playlist-title hover:cursor-pointer text-lg"
+                onClick={() => {
+                  setIsEditing(true);
+                  setOpenBox(null);
+                }}
+              >
+                {currentTitle}
+              </span>
+            )}
           </div>
-          <div className=" border p-4">
-            <div className="flex justify-between">
-              <span className="playlist-count">{playlist.shortsCount}</span>
-              <span className="due-shorts">{playlist.dueCount}</span>
+
+          <div className="px-2 pb-2">
+            <div className="flex gap-2">
+              <span className="playlist-count">
+                {playlist.shorts.length} shorts /
+              </span>
+              <span className="due-shorts">{playlist.dueCount} due</span>
             </div>
           </div>
         </div>
 
-        <div className="border flex justify-between p-4 gap-4">
+        <div className="border border-t-0 flex justify-between p-2 gap-3">
           <Link
             to="/watch"
-            state={{ playlist }}
-            className="flex-1 border text-center"
+            state={{ playlistId: playlist.id }}
+            className="flex-1 border text-center py-1"
           >
             Practice
           </Link>
           <button
             className="flex-1 border"
-            onClick={() => setOpenBox(openBox === "add" ? null : "add")}
+            onClick={() => {
+              setOpenBox(openBox === "add" ? null : "add");
+              setIsEditing(false);
+            }}
           >
             {openBox === "add" ? "X" : "Add"}
           </button>
           <button
             className="flex-1 border"
-            onClick={() => setOpenBox(openBox === "manage" ? null : "manage")}
+            onClick={() => {
+              setOpenBox(openBox === "manage" ? null : "manage");
+              setIsEditing(false);
+            }}
           >
             {openBox === "manage" ? "X" : "Manage"}
           </button>
           <button
             className="flex-1 border"
-            onClick={() =>
-              setOpenBox(openBox === "settings" ? null : "settings")
-            }
+            onClick={() => {
+              setOpenBox(openBox === "settings" ? null : "settings");
+              setIsEditing(false);
+            }}
           >
             {openBox === "settings" ? "X" : "Settings"}
           </button>
           <button
             className="flex-1 border"
-            onClick={() => setOpenBox(openBox === "delete" ? null : "delete")}
+            onClick={() => {
+              setOpenBox(openBox === "delete" ? null : "delete");
+              setIsEditing(false);
+            }}
           >
             {openBox === "delete" ? "X" : "Delete"}
           </button>
         </div>
 
         {openBox === "add" && (
-          <div className="add-shorts-box border p-4">
-            <div className="add-short flex gap-4">
+          <div className="add-shorts-box border border-t-0 p-2 flex flex-col gap-2">
+            <div className="add-short flex gap-2">
               <input
                 type="url"
                 value={newUrl}
-                onChange={(e) => setNewUrl(e.target.value)}
+                onChange={(e) => {
+                  setNewUrl(e.target.value);
+                  setAddShortError("");
+                }}
                 placeholder="https://www.youtube.com/shorts/…"
-                className="border flex-1"
+                className="border flex-1 p-2"
               />
               <button
-                className="border"
+                className="border px-2"
                 onClick={() => addShort(newUrl, playlist.id)}
               >
                 Add
               </button>
+              {addShortError !== "" && <p>{addShortError}</p>}
             </div>
-            <div className="add-playlist flex gap-4">
+            <div className="add-playlist flex gap-2">
               <input
                 type="url"
                 value={newPlaylistUrl}
                 onChange={(e) => setPlaylistUrl(e.target.value)}
                 placeholder="https://www.youtube.com/playlist?list=…"
-                className="border flex-1"
+                className="border flex-1 p-2"
               />
               <button
-                className="border"
+                className="border px-2"
                 onClick={() => importPlaylist(newPlaylistUrl)}
               >
                 Import playlist
@@ -157,9 +211,9 @@ export default function PlaylistCard({
         )}
 
         {openBox === "manage" && (
-          <div className="shorts-list-box border p-4">
+          <div className="shorts-list-box border border-t-0 p-2 flex flex-col gap-2">
             {playlist.shorts.map((short) => (
-              <div className="add-short flex border p-4 justify-between gap-4">
+              <div className="add-short flex border p-2 justify-between gap-2">
                 <span>{short}</span>
                 <button
                   className="border"
@@ -173,7 +227,7 @@ export default function PlaylistCard({
         )}
 
         {openBox === "settings" && (
-          <div className="settings-box flex border p-4 gap-4">
+          <div className="settings-box flex border border-t-0 p-2 gap-2">
             <div className="flex-1">
               <p>
                 Current new card daily limit:
@@ -220,7 +274,7 @@ export default function PlaylistCard({
         )}
 
         {openBox === "delete" && (
-          <div className="delete-box flex border p-4 gap-4">
+          <div className="delete-box flex border border-t-0 p-2 gap-2">
             <button
               className="border flex-1"
               onClick={() => confirmDelete(playlist.id)}

@@ -15,11 +15,12 @@ React 19, TypeScript, Vite, React router, Tailwind
 ## V1
 
 - [x] Foundation: Vite + React + TS, Eslint, Prettier, Tailwind, routing
-- [ ] Static UI: Navbar, Card, Playlist, Study screen — hardcoded data, no state
+- [x] Static UI: Navbar, Card, Playlist, Study screen — hardcoded data, no state
 - [ ] State: wire up real data, interactions, and spaced repetition algorithm
 - [ ] Playlists: create/rename/delete, add Shorts by URL, bulk import via YouTube playlist
-- [ ] Study: show short, background preload for seamless transition, four-button rating, queue management
+- [ ] Study: show short, difficulty rating, queue management
 - [ ] UI shell: mobile drawer, dark mode, responsive layout
+- [ ] Final pieces: importing playlists
 
 # V2 ideas
 
@@ -27,3 +28,4 @@ React 19, TypeScript, Vite, React router, Tailwind
 - UI: landing + FAQ
 - Backend storage
 - Auth: wire up login/signup pages to a backend
+- background preload for seamless transition,

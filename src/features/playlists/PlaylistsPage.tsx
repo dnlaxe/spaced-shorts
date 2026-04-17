@@ -1,13 +1,12 @@
 import PlaylistCard from "./components/PlaylistCard";
 import data from "../../data/db";
-import { useEffect, useState } from "react";
+import useLocalStorageState from "../../hooks/useLocalStorage";
+import type { Playlist } from "../../types/types";
 
 export default function PlaylistsPage() {
-  const [playlists, setPlaylists] = useState(data);
+  const [playlists, setPlaylists] = useLocalStorageState("playlists", data);
 
-  useEffect(() => console.log(playlists), [playlists]);
-
-  function addShortToPlaylist(playlistId: string, segment: string) {
+  function addShortToPlaylist(segment: string, playlistId: string) {
     setPlaylists(
       playlists.map((p) =>
         p.id === playlistId ? { ...p, shorts: [...p.shorts, segment] } : p,
@@ -15,7 +14,7 @@ export default function PlaylistsPage() {
     );
   }
 
-  function deleteShortFromPlaylist(playlistId: string, segment: string) {
+  function deleteShortFromPlaylist(segment: string, playlistId: string) {
     setPlaylists(
       playlists.map((p) =>
         p.id === playlistId
@@ -26,7 +25,7 @@ export default function PlaylistsPage() {
   }
 
   function deletePlaylist(playlistId: string) {
-    setPlaylists(playlists.filter((p) => p.id !== playlistId));
+    setPlaylists((prev) => prev.filter((p) => p.id !== playlistId));
   }
 
   function updateNewLimit(newLimit: number, playlistId: string) {
@@ -49,12 +48,36 @@ export default function PlaylistsPage() {
     );
   }
 
+  function createNewPlaylist(newPlaylist: Playlist) {
+    setPlaylists((prev) => [newPlaylist, ...prev]);
+  }
+
+  function renamePlaylist(newTitle: string, playlistId: string) {
+    setPlaylists((prev) =>
+      prev.map((p) => (p.id === playlistId ? { ...p, title: newTitle } : p)),
+    );
+  }
+
   return (
     <>
       <div className="px-4">
-        <div className="flex justify-between py-4">
+        <div className="flex justify-between items-end py-4">
           <h1>Your playlists</h1>
-          <button className="border">New playlist</button>
+          <button
+            className="border px-3 py-1"
+            onClick={() =>
+              createNewPlaylist({
+                id: crypto.randomUUID(),
+                title: "New playlist",
+                dueCount: 0,
+                shorts: [],
+                settings: { newLimit: 5, reviewLimit: 10 },
+                watchCount: 0,
+              })
+            }
+          >
+            New playlist
+          </button>
         </div>
         <div className="flex flex-col gap-4">
           {playlists.map((playlist) => (
@@ -66,6 +89,7 @@ export default function PlaylistsPage() {
               onDeletePlaylist={deletePlaylist}
               onUpdateNewLimit={updateNewLimit}
               onUpdateReviewLimit={updateReviewLimit}
+              onRenamePlaylist={renamePlaylist}
             />
           ))}
         </div>
