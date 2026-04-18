@@ -1,15 +1,29 @@
 import PlaylistCard from "./components/PlaylistCard";
 import data from "../../data/db";
 import useLocalStorageState from "../../hooks/useLocalStorage";
-import type { Playlist } from "../../types/types";
+import type { Playlist, Short } from "../../types/types";
 
 export default function PlaylistsPage() {
-  const [playlists, setPlaylists] = useLocalStorageState("playlists", data);
+  const [playlists, setPlaylists] = useLocalStorageState<Playlist[]>(
+    "playlists",
+    data,
+  );
 
   function addShortToPlaylist(segment: string, playlistId: string) {
+    const newShort: Short = {
+      id: segment,
+      due: Date.now(),
+      intervals: 0,
+      ease: 2.5,
+      state: "new",
+      stepIndex: 0,
+      reps: 0,
+      lapses: 0,
+    };
+
     setPlaylists(
       playlists.map((p) =>
-        p.id === playlistId ? { ...p, shorts: [...p.shorts, segment] } : p,
+        p.id === playlistId ? { ...p, shorts: [...p.shorts, newShort] } : p,
       ),
     );
   }
@@ -18,7 +32,10 @@ export default function PlaylistsPage() {
     setPlaylists(
       playlists.map((p) =>
         p.id === playlistId
-          ? { ...p, shorts: p.shorts.filter((s) => s !== segment) }
+          ? {
+              ...p,
+              shorts: p.shorts.filter((s) => s.id !== segment),
+            }
           : p,
       ),
     );
@@ -69,7 +86,6 @@ export default function PlaylistsPage() {
               createNewPlaylist({
                 id: crypto.randomUUID(),
                 title: "New playlist",
-                dueCount: 0,
                 shorts: [],
                 settings: { newLimit: 5, reviewLimit: 10 },
                 watchCount: 0,

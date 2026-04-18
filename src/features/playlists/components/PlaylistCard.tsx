@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import extractShortId from "../extractShortId";
 import type { Playlist } from "../../../types/types";
+import { buildSessionShorts } from "../../../lib/session";
 
 type Props = {
   playlist: Playlist;
@@ -33,6 +34,8 @@ export default function PlaylistCard({
   const [currentTitle, setCurrentTitle] = useState<string>(playlist.title);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [addShortError, setAddShortError] = useState<string>("");
+
+  const [now] = useState(() => Date.now());
 
   function addShort(url: string, playlistId: string) {
     const shortId = extractShortId(url);
@@ -73,6 +76,12 @@ export default function PlaylistCard({
     console.log(`Renaming ${playlist.title} t0 ${newTitle}`);
     onRenamePlaylist(newTitle, playlistId);
   }
+
+  const sessionCount = buildSessionShorts(
+    playlist.shorts,
+    playlist.settings,
+    now,
+  ).length;
 
   return (
     <>
@@ -120,21 +129,23 @@ export default function PlaylistCard({
               <span className="playlist-count">
                 {playlist.shorts.length} shorts /
               </span>
-              <span className="due-shorts">{playlist.dueCount} due</span>
+              <span className="due-shorts">{sessionCount} due</span>
             </div>
           </div>
         </div>
 
-        <div className="border border-t-0 flex justify-between p-2 gap-3">
+        <div className="border border-t-0 flex justify-between p-2 gap-3 bg-slate-50">
           <Link
             to="/watch"
             state={{ playlistId: playlist.id }}
-            className="flex-1 border text-center py-1"
+            className={`flex-1 border text-center py-1 bg-white ${
+              sessionCount === 0 ? "opacity-50 pointer-events-none" : ""
+            }`}
           >
             Practice
           </Link>
           <button
-            className="flex-1 border"
+            className="flex-1 border bg-white"
             onClick={() => {
               setOpenBox(openBox === "add" ? null : "add");
               setIsEditing(false);
@@ -143,7 +154,7 @@ export default function PlaylistCard({
             {openBox === "add" ? "X" : "Add"}
           </button>
           <button
-            className="flex-1 border"
+            className="flex-1 border bg-white"
             onClick={() => {
               setOpenBox(openBox === "manage" ? null : "manage");
               setIsEditing(false);
@@ -152,7 +163,7 @@ export default function PlaylistCard({
             {openBox === "manage" ? "X" : "Manage"}
           </button>
           <button
-            className="flex-1 border"
+            className="flex-1 border bg-white"
             onClick={() => {
               setOpenBox(openBox === "settings" ? null : "settings");
               setIsEditing(false);
@@ -161,7 +172,7 @@ export default function PlaylistCard({
             {openBox === "settings" ? "X" : "Settings"}
           </button>
           <button
-            className="flex-1 border"
+            className="flex-1 border bg-white"
             onClick={() => {
               setOpenBox(openBox === "delete" ? null : "delete");
               setIsEditing(false);
@@ -212,63 +223,70 @@ export default function PlaylistCard({
 
         {openBox === "manage" && (
           <div className="shorts-list-box border border-t-0 p-2 flex flex-col gap-2">
-            {playlist.shorts.map((short) => (
-              <div className="add-short flex border p-2 justify-between gap-2">
-                <span>{short}</span>
-                <button
-                  className="border"
-                  onClick={() => deleteShortFromPlaylist(short, playlist.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+            {playlist.shorts.length === 0 ? (
+              <div>No shorts. Click Add to add one.</div>
+            ) : (
+              playlist.shorts.map((short) => (
+                <div className="add-short flex border p-2 justify-between gap-2">
+                  <span>{short.id}</span>
+                  <button
+                    className="border"
+                    onClick={() =>
+                      deleteShortFromPlaylist(short.id, playlist.id)
+                    }
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         )}
 
         {openBox === "settings" && (
-          <div className="settings-box flex border border-t-0 p-2 gap-2">
-            <div className="flex-1">
-              <p>
-                Current new card daily limit:
-                {playlist.settings.newLimit}
-              </p>
-              <label>
-                New limit:
+          <div className="settings-box flex border border-t-0 p-2 gap-4">
+            <div className="flex-1 min-w-0 flex flex-col gap-2">
+              <p>New short limit: {playlist.settings.newLimit}</p>
+
+              <div className="flex gap-2 min-w-0 items-end">
+                <span className="flex-none">New limit:</span>
+
                 <input
-                  className="border"
+                  className="border flex-1 min-w-0"
                   value={newLimit}
                   onChange={(e) => setNewLimit(e.target.value)}
                 />
+
                 <button
-                  className="border"
+                  className="border flex-none px-2"
                   onClick={() => changeNewLimit(Number(newLimit), playlist.id)}
                 >
                   Save
                 </button>
-              </label>
+              </div>
             </div>
-            <div className="flex-1">
-              <p>
-                Current review card daily limit:
-                {playlist.settings.reviewLimit}
-              </p>
-              <label>
-                New limit:
+
+            <div className="flex-1 min-w-0 flex flex-col gap-2">
+              <p>Review limit: {playlist.settings.reviewLimit}</p>
+
+              <div className="flex gap-2 min-w-0 items-end">
+                <span className="flex-none">Review limit:</span>
+
                 <input
-                  className="border"
+                  className="border flex-1 min-w-0"
                   value={reviewLimit}
                   onChange={(e) => setReviewLimit(e.target.value)}
                 />
+
                 <button
-                  className="border"
+                  className="border flex-none px-2"
                   onClick={() =>
                     changeReviewLimit(Number(reviewLimit), playlist.id)
                   }
                 >
                   Save
                 </button>
-              </label>
+              </div>
             </div>
           </div>
         )}

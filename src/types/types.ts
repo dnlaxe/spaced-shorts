@@ -1,20 +1,20 @@
 export type Playlist = {
   id: string;
   title: string;
-  dueCount: number;
-  shorts: string[];
+  shorts: Short[];
   settings: { newLimit: number; reviewLimit: number };
   watchCount: number;
 };
 
-export type Rating = "again" | "hard" | "medium" | "easy";
-export type HistoryItem = {
-  shortId: string;
-  rating: Rating;
-  answeredAt: number;
+export type Short = {
+  id: string;
+  due: number;
+  intervals: number;
+  ease: number;
+  state: string;
+  stepIndex: number;
+  reps: number;
+  lapses: number;
 };
 
-export type Review = {
-  playlistId: string;
-  answers: HistoryItem[];
-};
+export type Rating = "again" | "hard" | "medium" | "easy";
