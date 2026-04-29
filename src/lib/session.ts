@@ -11,6 +11,7 @@ export function buildSessionShorts(
 
   const reviewShorts = allShorts
     .filter((short) => short.state === "review" && short.due < now)
+    .sort((a, b) => a.due - b.due)
     .slice(0, settings.reviewLimit);
 
   const newShorts = allShorts

@@ -15,3 +15,7 @@
 
 - Implemented very basic spaced repitition algorithm. Cards move between statuses: new, learning, review, relearning. Its not perfect but its a start.
 - Added UI feedback to difficulty buttons.
+
+## 2026-04-22
+
+- Added date label to cards

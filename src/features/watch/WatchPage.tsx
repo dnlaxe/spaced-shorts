@@ -79,21 +79,21 @@ export default function WatchPage() {
           Exit
         </Link>
         <button
-          className={`easy rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`again rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
     ${selected === "again" ? "bg-black text-white" : "bg-red-300"}`}
           onClick={() => handleClick("again")}
         >
           {selected === "again" ? "✔" : "Again"}
         </button>
         <button
-          className={`easy rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`hard rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
     ${selected === "hard" ? "bg-black text-white" : "bg-orange-300"}`}
           onClick={() => handleClick("hard")}
         >
           {selected === "hard" ? "✔" : "Hard"}
         </button>
         <button
-          className={`easy rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`medium rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
     ${selected === "medium" ? "bg-black text-white" : "bg-green-300"}`}
           onClick={() => handleClick("medium")}
         >

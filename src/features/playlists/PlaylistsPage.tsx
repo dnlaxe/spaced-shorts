@@ -95,19 +95,24 @@ export default function PlaylistsPage() {
             New playlist
           </button>
         </div>
+
         <div className="flex flex-col gap-4">
-          {playlists.map((playlist) => (
-            <PlaylistCard
-              key={playlist.id}
-              playlist={playlist}
-              onAddShort={addShortToPlaylist}
-              onDeleteShort={deleteShortFromPlaylist}
-              onDeletePlaylist={deletePlaylist}
-              onUpdateNewLimit={updateNewLimit}
-              onUpdateReviewLimit={updateReviewLimit}
-              onRenamePlaylist={renamePlaylist}
-            />
-          ))}
+          {playlists.length === 0 ? (
+            <div>No playlists. Click New playlist to create one</div>
+          ) : (
+            playlists.map((playlist) => (
+              <PlaylistCard
+                key={playlist.id}
+                playlist={playlist}
+                onAddShort={addShortToPlaylist}
+                onDeleteShort={deleteShortFromPlaylist}
+                onDeletePlaylist={deletePlaylist}
+                onUpdateNewLimit={updateNewLimit}
+                onUpdateReviewLimit={updateReviewLimit}
+                onRenamePlaylist={renamePlaylist}
+              />
+            ))
+          )}
         </div>
       </div>
     </>
