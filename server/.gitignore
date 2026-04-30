@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# OS
+.DS_Store
+
+# build
+/dist
+
+# env
+.env
+
+# testing
+coverage/
+
+# editor
+.vscode/
+
+# json credentials
+.credentials.*.json
+
+# logs
+*.log

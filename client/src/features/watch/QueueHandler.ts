@@ -16,10 +16,9 @@ function needsMoreStepsInSession(short: Short): boolean {
 }
 
 export function useQueueHandler(
-  dueShorts: Short[],
   allShorts: Short[],
-  playlistId: string,
-  onComplete?: (playlistId: string, updatedShorts: Short[]) => void,
+  dueShorts: Short[],
+  onComplete?: (updatedShorts: Short[]) => void,
 ) {
   const [queue, setQueue] = useState<Short[]>([...dueShorts]);
   const [updatedShorts, setUpdatedShorts] = useState<Short[]>([]);
@@ -48,7 +47,7 @@ export function useQueueHandler(
         return replacement ?? short;
       });
 
-      onComplete?.(playlistId, mergedShorts);
+      onComplete?.(mergedShorts);
     }
   }
 

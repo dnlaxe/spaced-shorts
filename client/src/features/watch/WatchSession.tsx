@@ -1,18 +1,19 @@
-import { Link, useLocation } from "react-router";
-import { useQueueHandler } from "./QueueHandler";
-import useLocalStorageState from "../../hooks/useLocalStorage";
-import data from "../../data/db";
-import type { Playlist, Rating, Short } from "../../types/types";
 import { useState } from "react";
-import { buildSessionShorts } from "../../lib/session";
+import type { Rating, Short } from "../../types/types";
+import { Link } from "react-router";
+import { useQueueHandler } from "./QueueHandler";
 
-export default function WatchPage() {
-  const { playlistId } = useLocation().state as { playlistId: string };
-  const [playlists, setPlaylists] = useLocalStorageState<Playlist[]>(
-    "playlists",
-    data,
-  );
+type WatchSessionProps = {
+  shorts: Short[];
+  allShorts: Short[];
+  onComplete: (updatedShorts: Short[]) => void;
+};
 
+export default function WatchSession({
+  shorts,
+  allShorts,
+  onComplete,
+}: WatchSessionProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
   function handleClick(rating: Rating) {
@@ -21,32 +22,9 @@ export default function WatchPage() {
     setTimeout(() => setSelected(null), 400);
   }
 
-  const [sessionStartedAt] = useState(() => Date.now());
-
-  const playlist = playlists.find((p) => p.id === playlistId);
-  const allShorts = playlist?.shorts ?? [];
-  const settings = playlist?.settings ?? { newLimit: 5, reviewLimit: 5 };
-
-  const dueShorts = buildSessionShorts(allShorts, settings, sessionStartedAt);
-
-  function onComplete(playlistId: string, updatedShorts: Short[]) {
-    setPlaylists((prev) =>
-      prev.map((playlist) =>
-        playlist.id === playlistId
-          ? {
-              ...playlist,
-              watchCount: playlist.watchCount + 1,
-              shorts: updatedShorts,
-            }
-          : playlist,
-      ),
-    );
-  }
-
   const { currentShort, respond, done } = useQueueHandler(
-    dueShorts,
     allShorts,
-    playlistId,
+    shorts,
     onComplete,
   );
 

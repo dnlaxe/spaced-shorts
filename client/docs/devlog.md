@@ -19,3 +19,9 @@
 ## 2026-04-22
 
 - Added date label to cards
+
+## 2026-04-30
+
+- Added express backend. Split into Server and Client.
+- Moved persistance to in memory store in backend.
+- Added API helpers to frontend.

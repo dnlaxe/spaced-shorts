@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-04-30
+
+### Changed
+
+- Split the project into separate `client` and `server` applications.
+- Moved playlist state changes from local-only React updates to backend-backed persistence.
+- Refactored playlist state management so `usePlaylists()` coordinates API updates and frontend state.
+
+### Added
+
+- Added playlist API helpers for fetching, creating, updating, and deleting playlists.
+- Added server endpoints for `GET /api/playlists`, `POST /api/playlists`, `PATCH /api/playlists/:playlistId`, and `DELETE /api/playlists/:playlistId`.
+- Added file-based playlist storage using `server/src/data/db.json` and a small read/write store module.
+
+### Fixed
+
+- Fixed watch session completion so updated shorts and watch counts are saved persistently.
+- Fixed playlist page actions so creating, renaming, limit updates, short edits, and deletion can be persisted.
+
 ## 2026-04-16
 
 ### Added
