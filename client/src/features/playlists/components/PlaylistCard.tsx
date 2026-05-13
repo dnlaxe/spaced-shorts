@@ -3,6 +3,14 @@ import { Link } from "react-router";
 import extractShortId from "../extractShortId";
 import type { Playlist } from "../../../types/types";
 import { buildSessionShorts } from "../../../lib/session";
+import {
+  CheckIcon,
+  GearIcon,
+  ListIcon,
+  PlusIcon,
+  TrashIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 
 type Props = {
   playlist: Playlist;
@@ -26,14 +34,16 @@ export default function PlaylistCard({
   const [openBox, setOpenBox] = useState<
     "add" | "manage" | "settings" | "delete" | null
   >(null);
+  const isDrawerOpen = openBox != null;
 
   const [newUrl, setNewUrl] = useState<string>("");
-  const [newPlaylistUrl, setPlaylistUrl] = useState<string>("");
+  // const [newPlaylistUrl, setPlaylistUrl] = useState<string>("");
   const [newLimit, setNewLimit] = useState<string>("");
   const [reviewLimit, setReviewLimit] = useState<string>("");
   const [currentTitle, setCurrentTitle] = useState<string>(playlist.title);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [addShortError, setAddShortError] = useState<string>("");
+  const [addShortSaved, setAddShortSaved] = useState(false);
 
   const [now] = useState(() => Date.now());
 
@@ -45,15 +55,24 @@ export default function PlaylistCard({
       setAddShortError("");
       console.log(`Adding ${url} to ${playlistId}`);
       onAddShort(shortId, playlistId);
+      setNewUrl("");
+      setAddShortSaved(true);
+
+      setTimeout(() => {
+        setAddShortSaved(false);
+      }, 700);
     }
   }
 
-  function importPlaylist(playlistUrl: string) {
-    console.log(`Importing ${playlistUrl}!`);
-  }
+  // function importPlaylist(playlistUrl: string) {
+  //   console.log(`Importing ${playlistUrl}!`);
+  // }
 
   function deleteShortFromPlaylist(segment: string, playlistId: string) {
     console.log(`Deleting ${segment}`);
+    if (openBox === "manage" && playlist.shorts.length === 1) {
+      setOpenBox(null);
+    }
     onDeleteShort(segment, playlistId);
   }
 
@@ -113,19 +132,22 @@ export default function PlaylistCard({
                   onChange={(e) => setCurrentTitle(e.target.value)}
                 />
                 <button
-                  className="border px-2"
+                  disabled={currentTitle.trim().length === 0}
                   onClick={() => {
                     renamePlaylist(currentTitle, playlist.id);
                     setIsEditing(false);
                   }}
+                  className="disabled:opacity-50"
                 >
-                  Save
+                  <CheckIcon size={18} />
                 </button>
                 <button
-                  className="border px-2"
-                  onClick={() => setIsEditing(false)}
+                  onClick={() => {
+                    setCurrentTitle(playlist.title);
+                    setIsEditing(false);
+                  }}
                 >
-                  Cancel
+                  <XIcon size={18} />
                 </button>
               </div>
             ) : (
@@ -135,86 +157,97 @@ export default function PlaylistCard({
                   setIsEditing(true);
                   setOpenBox(null);
                 }}
+                title="Click to edit title"
               >
                 {currentTitle}
               </span>
             )}
           </div>
-
-          <div className="px-2 pb-2">
-            <div className="playlist-count">
-              {playlist.shorts.length} shorts
-            </div>
-          </div>
         </div>
 
         <div className="border border-t-0 flex py-1 px-2 items-center justify-between">
           {playlist.shorts.length === 0 ? (
-            <div>No shorts. Click Add to add one.</div>
+            <div className="pl-2">No shorts. Click Add to add one.</div>
           ) : (
             <Link
               to="/watch"
               state={{ playlistId: playlist.id }}
-              className={`border text-center pl-3 bg-blue-400 text-white rounded-full flex items-center ${
-                sessionCount === 0
-                  ? "pr-2 bg-slate-400 pointer-events-none"
-                  : "pr-1"
+              className={`ml-2 text-sm italic ${
+                sessionCount === 0 ? "pointer-events-none" : "not-italic"
               }`}
             >
               {sessionCount !== 0 ? "Practice " : dueLabel}
-              {sessionCount !== 0 ? (
-                <span className="inline-flex bg-white text-black rounded-full h-4 w-4 items-center justify-center ml-2 text-xs">
-                  {dueLabel}
-                </span>
-              ) : null}
+              {sessionCount !== 0 ? <span>{dueLabel}</span> : null}
             </Link>
           )}
 
           <div className="flex">
-            <button
-              className="underline px-2"
-              onClick={() => {
-                setOpenBox(openBox === "add" ? null : "add");
-                setIsEditing(false);
-              }}
-            >
-              {openBox === "add" ? "X" : "Add"}
-            </button>
-            {playlist.shorts.length > 0 && (
+            {(!isDrawerOpen || openBox === "add") && (
               <button
-                className="underline px-2"
+                className={openBox === "add" ? "px-2" : "px-2"}
                 onClick={() => {
-                  setOpenBox(openBox === "manage" ? null : "manage");
+                  setOpenBox(openBox === "add" ? null : "add");
                   setIsEditing(false);
                 }}
               >
-                {openBox === "manage" ? "X" : "Manage"}
+                {openBox === "add" ? (
+                  <XIcon size={18} />
+                ) : (
+                  <PlusIcon size={18} />
+                )}
               </button>
             )}
-            <button
-              className="underline px-2"
-              onClick={() => {
-                setOpenBox(openBox === "settings" ? null : "settings");
-                setIsEditing(false);
-              }}
-            >
-              {openBox === "settings" ? "X" : "Settings"}
-            </button>
-            <button
-              className="underline px-2"
-              onClick={() => {
-                setOpenBox(openBox === "delete" ? null : "delete");
-                setIsEditing(false);
-              }}
-            >
-              {openBox === "delete" ? "X" : "Delete"}
-            </button>
+
+            {playlist.shorts.length > 0 &&
+              (!isDrawerOpen || openBox === "manage") && (
+                <button
+                  className={openBox === "manage" ? "px-2" : "px-2"}
+                  onClick={() => {
+                    setOpenBox(openBox === "manage" ? null : "manage");
+                    setIsEditing(false);
+                  }}
+                >
+                  {openBox === "manage" ? (
+                    <XIcon size={18} />
+                  ) : (
+                    <ListIcon size={18} />
+                  )}
+                </button>
+              )}
+
+            {(!isDrawerOpen || openBox === "settings") && (
+              <button
+                className={openBox === "settings" ? "px-2" : "px-2"}
+                onClick={() => {
+                  setOpenBox(openBox === "settings" ? null : "settings");
+                  setIsEditing(false);
+                }}
+              >
+                {openBox === "settings" ? (
+                  <XIcon size={18} />
+                ) : (
+                  <GearIcon size={18} />
+                )}
+              </button>
+            )}
+
+            {(!isDrawerOpen || openBox === "delete") && (
+              <button
+                className={openBox === "delete" ? "px-2" : "px-2"}
+                onClick={() => {
+                  setOpenBox(openBox === "delete" ? null : "delete");
+                  setIsEditing(false);
+                }}
+              >
+                {openBox === "delete" ? "" : <TrashIcon size={18} />}
+              </button>
+            )}
           </div>
         </div>
 
         {openBox === "add" && (
           <div className="add-shorts-box border border-t-0 p-2 flex flex-col gap-2">
-            <div className="add-short flex gap-2">
+            <div className="relative add-short flex gap-2">
               <input
                 type="url"
                 value={newUrl}
@@ -223,17 +256,21 @@ export default function PlaylistCard({
                   setAddShortError("");
                 }}
                 placeholder="https://www.youtube.com/shorts/…"
-                className="border flex-1 p-2"
+                className="border flex-1 p-2 pr-12"
               />
               <button
-                className="border px-2"
+                className="border px-2 absolute right-0 top-0 bottom-0 m-1"
                 onClick={() => addShort(newUrl, playlist.id)}
               >
-                Add
+                {addShortSaved ? (
+                  <CheckIcon size={18} />
+                ) : (
+                  <PlusIcon size={18} />
+                )}
               </button>
               {addShortError !== "" && <p>{addShortError}</p>}
             </div>
-            <div className="add-playlist flex gap-2">
+            {/* <div className="add-playlist flex gap-2">
               <input
                 type="url"
                 value={newPlaylistUrl}
@@ -247,20 +284,25 @@ export default function PlaylistCard({
               >
                 Import playlist
               </button>
-            </div>
+            </div> */}
           </div>
         )}
 
         {openBox === "manage" && (
           <div className="shorts-list-box border border-t-0 p-2 flex flex-col gap-2">
+            <div className="px-2">
+              <div className="playlist-count">
+                {playlist.shorts.length}{" "}
+                {playlist.shorts.length === 1 ? "short" : "shorts"}
+              </div>
+            </div>
             {playlist.shorts.map((short) => (
               <div className="add-short flex border p-2 justify-between gap-2">
                 <span>{short.id}</span>
                 <button
-                  className="border"
                   onClick={() => deleteShortFromPlaylist(short.id, playlist.id)}
                 >
-                  Delete
+                  <XIcon size={18} />
                 </button>
               </div>
             ))}
@@ -268,24 +310,23 @@ export default function PlaylistCard({
         )}
 
         {openBox === "settings" && (
-          <div className="settings-box flex border border-t-0 p-2 gap-4">
+          <div className="settings-box flex border border-t-0 p-4 gap-4">
             <div className="flex-1 min-w-0 flex flex-col gap-2">
               <p>New short limit: {playlist.settings.newLimit}</p>
 
-              <div className="flex gap-2 min-w-0 items-end">
-                <span className="flex-none">New limit:</span>
-
+              <div className="relative flex gap-2 min-w-0 items-end">
                 <input
-                  className="border flex-1 min-w-0"
+                  className="border flex-1 min-w-0 p-2 pr-12"
                   value={newLimit}
                   onChange={(e) => setNewLimit(e.target.value)}
+                  placeholder="New limit:"
                 />
 
                 <button
-                  className="border flex-none px-2"
+                  className="border flex-none px-2 absolute top-0 right-0 bottom-0 m-1"
                   onClick={() => changeNewLimit(Number(newLimit), playlist.id)}
                 >
-                  Save
+                  <PlusIcon size={18} />
                 </button>
               </div>
             </div>
@@ -293,22 +334,21 @@ export default function PlaylistCard({
             <div className="flex-1 min-w-0 flex flex-col gap-2">
               <p>Review limit: {playlist.settings.reviewLimit}</p>
 
-              <div className="flex gap-2 min-w-0 items-end">
-                <span className="flex-none">Review limit:</span>
-
+              <div className="relative flex gap-2 min-w-0 items-end">
                 <input
-                  className="border flex-1 min-w-0"
+                  className="border flex-1 min-w-0 p-2 pr-12"
                   value={reviewLimit}
                   onChange={(e) => setReviewLimit(e.target.value)}
+                  placeholder="Review limit:"
                 />
 
                 <button
-                  className="border flex-none px-2"
+                  className="absolute border flex-none px-2 top-0 bottom-0 right-0 m-1"
                   onClick={() =>
                     changeReviewLimit(Number(reviewLimit), playlist.id)
                   }
                 >
-                  Save
+                  <PlusIcon size={18} />
                 </button>
               </div>
             </div>
@@ -316,16 +356,19 @@ export default function PlaylistCard({
         )}
 
         {openBox === "delete" && (
-          <div className="delete-box flex border border-t-0 p-2 gap-2">
-            <button
-              className="border flex-1"
-              onClick={() => confirmDelete(playlist.id)}
-            >
-              Confirm
-            </button>
-            <button className="border flex-1" onClick={() => setOpenBox(null)}>
-              cancel
-            </button>
+          <div className="delete-box flex border border-t-0 py-2 px-4 gap-4 text-sm flex-row justify-between">
+            <div className="text-base">Delete this playlist forever?</div>
+            <div className="flex gap-4">
+              <button
+                className="flex-1"
+                onClick={() => confirmDelete(playlist.id)}
+              >
+                <CheckIcon size={18} />
+              </button>
+              <button className="flex-1" onClick={() => setOpenBox(null)}>
+                <XIcon size={18} />
+              </button>
+            </div>
           </div>
         )}
       </div>

@@ -25,3 +25,8 @@
 - Added express backend. Split into Server and Client.
 - Moved persistance to in memory store in backend.
 - Added API helpers to frontend.
+
+## 2026-05-13
+
+- Updated title editing
+- Improved UI

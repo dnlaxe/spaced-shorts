@@ -1,43 +1,32 @@
 [
   {
-    "id": "e6fddd79-68db-443b-9282-6e2998855afe",
-    "title": "Hello",
+    "id": "22eeadb8-8e7e-4fec-8b10-09b9d12f8a48",
+    "title": "Click to nrthefdedit title",
     "shorts": [
       {
-        "id": "YdPblBZ8LwI",
-        "due": 1777630920699,
+        "id": "xF7X0NQW-60",
+        "due": 1778741647177,
         "intervals": 1,
         "ease": 2.5,
         "state": "review",
         "stepIndex": 2,
-        "reps": 3,
+        "reps": 4,
+        "lapses": 1
+      },
+      {
+        "id": "RMsGI2OE55I",
+        "due": 1778655238141,
+        "intervals": 0,
+        "ease": 2.5,
+        "state": "review",
+        "stepIndex": 2,
+        "reps": 1,
         "lapses": 0
       }
     ],
     "settings": {
       "newLimit": 1,
-      "reviewLimit": 1
-    },
-    "watchCount": 2
-  },
-  {
-    "id": "1",
-    "title": "React Essentials",
-    "shorts": [
-      {
-        "id": "Md75jcHOY_I",
-        "due": 1777628291933,
-        "intervals": 1,
-        "ease": 2.5,
-        "state": "review",
-        "stepIndex": 2,
-        "reps": 2,
-        "lapses": 0
-      }
-    ],
-    "settings": {
-      "newLimit": 5,
-      "reviewLimit": 6
+      "reviewLimit": 10
     },
     "watchCount": 2
   },
@@ -47,17 +36,68 @@
     "shorts": [
       {
         "id": "Md75jcHOY_I",
-        "due": 1777628305916,
+        "due": 1778662724202,
         "intervals": 1,
         "ease": 2.5,
         "state": "review",
         "stepIndex": 2,
-        "reps": 2,
+        "reps": 3,
         "lapses": 0
       },
       {
         "id": "ZDQ3BuaUbyU",
-        "due": 1777628300810,
+        "due": 1778663104699,
+        "intervals": 1,
+        "ease": 2.4,
+        "state": "review",
+        "stepIndex": 0,
+        "reps": 7,
+        "lapses": 1
+      },
+      {
+        "id": "_djQ4MFanCY",
+        "due": 1778741178412,
+        "intervals": 1,
+        "ease": 2.5,
+        "state": "review",
+        "stepIndex": 2,
+        "reps": 8,
+        "lapses": 3
+      },
+      {
+        "id": "_djQ4MFanCY",
+        "due": 1778741178412,
+        "intervals": 1,
+        "ease": 2.5,
+        "state": "review",
+        "stepIndex": 2,
+        "reps": 8,
+        "lapses": 3
+      },
+      {
+        "id": "_djQ4MFanCY",
+        "due": 1778741178412,
+        "intervals": 1,
+        "ease": 2.5,
+        "state": "review",
+        "stepIndex": 2,
+        "reps": 8,
+        "lapses": 3
+      }
+    ],
+    "settings": {
+      "newLimit": 10,
+      "reviewLimit": 6
+    },
+    "watchCount": 6
+  },
+  {
+    "id": "3",
+    "title": "TypeScript Tips",
+    "shorts": [
+      {
+        "id": "Md75jcHOY_I",
+        "due": 1778740199962,
         "intervals": 1,
         "ease": 2.4,
         "state": "review",
@@ -66,61 +106,30 @@
         "lapses": 0
       },
       {
-        "id": "b_84g2L4lSw",
-        "due": 1777628306932,
+        "id": "ZDQ3BuaUbyU",
+        "due": 1778740225780,
         "intervals": 1,
-        "ease": 2.3,
+        "ease": 2.5,
         "state": "review",
-        "stepIndex": 0,
+        "stepIndex": 2,
         "reps": 2,
         "lapses": 0
-      }
-    ],
-    "settings": {
-      "newLimit": 5,
-      "reviewLimit": 6
-    },
-    "watchCount": 2
-  },
-  {
-    "id": "3",
-    "title": "TypeScript Tips",
-    "shorts": [
-      {
-        "id": "Md75jcHOY_I",
-        "due": 1761840000000,
-        "intervals": 0,
-        "ease": 2.4,
-        "state": "review",
-        "stepIndex": 0,
-        "reps": 0,
-        "lapses": 0
-      },
-      {
-        "id": "ZDQ3BuaUbyU",
-        "due": 1761840000000,
-        "intervals": 0,
-        "ease": 2.5,
-        "state": "new",
-        "stepIndex": 0,
-        "reps": 0,
-        "lapses": 0
       },
       {
         "id": "b_84g2L4lSw",
-        "due": 1761840000000,
-        "intervals": 0,
+        "due": 1778740227269,
+        "intervals": 1,
         "ease": 2.4,
-        "state": "learning",
-        "stepIndex": 0,
-        "reps": 0,
+        "state": "review",
+        "stepIndex": 3,
+        "reps": 3,
         "lapses": 0
       }
     ],
     "settings": {
-      "newLimit": 5,
-      "reviewLimit": 6
+      "newLimit": 100,
+      "reviewLimit": 100
     },
-    "watchCount": 0
+    "watchCount": 2
   }
 ]

@@ -1,6 +1,7 @@
 import PlaylistCard from "./components/PlaylistCard";
 import type { Playlist, Short } from "../../types/types";
 import usePlaylists from "../../hooks/usePlaylists";
+import { PlusIcon } from "@phosphor-icons/react";
 
 export default function PlaylistsPage() {
   const {
@@ -83,20 +84,21 @@ export default function PlaylistsPage() {
   return (
     <>
       <div className="px-4">
-        <div className="flex justify-between items-end py-4">
-          <h1>Your playlists</h1>
+        <div className="flex justify-between items-center py-4">
+          <h1 className="text-2xl">Your playlists</h1>
           <button
-            className="border px-3 py-1"
+            className="border px-3 py-1 rounded-full flex gap-1 items-center"
             onClick={() =>
               createNewPlaylist({
                 id: crypto.randomUUID(),
-                title: "New playlist",
+                title: "Click to edit title",
                 shorts: [],
                 settings: { newLimit: 5, reviewLimit: 10 },
                 watchCount: 0,
               })
             }
           >
+            <PlusIcon size={18} />
             New playlist
           </button>
         </div>

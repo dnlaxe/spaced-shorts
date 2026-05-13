@@ -19,7 +19,7 @@ export default function WatchSession({
   function handleClick(rating: Rating) {
     respond(rating);
     setSelected(rating);
-    setTimeout(() => setSelected(null), 400);
+    setTimeout(() => setSelected(null), 500);
   }
 
   const { currentShort, respond, done } = useQueueHandler(
@@ -40,45 +40,51 @@ export default function WatchSession({
   }
 
   return (
-    <div className="watch-container flex flex-col flex-1 md:mb-12 md:mx-24">
-      <div className="screen border flex-1">
+    <div
+      className={`watch-container flex flex-col flex-1 md:mb-12 md:mx-24 transition-colors duration-300 ease-out bg-black ${
+        selected === "medium" ? "bg-green-300" : ""
+      } ${selected === "easy" ? "bg-blue-300" : ""} ${
+        selected === "again" ? "bg-red-300" : ""
+      } ${selected === "hard" ? "bg-orange-300" : ""}`}
+    >
+      <div className="screen flex-1">
         <iframe
           src={`https://www.youtube.com/embed/${currentShort.id}`}
-          className="w-full h-full"
+          className={`w-full h-full p-2`}
           allowFullScreen
         />
       </div>
 
-      <div className="difficulty-buttons flex h-24 p-1 md:px-0 gap-1">
+      <div className="difficulty-buttons flex h-24 p-1 pt-0 gap-1">
         <Link
           to="/playlists"
-          className="exit rounded flex-1 flex items-center justify-center uppercase text-2xl tracking-widest bg-gray-300"
+          className="exit rounded flex-1 flex items-center justify-center text-2xl bg-gray-300"
         >
           Exit
         </Link>
         <button
-          className={`again rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`again rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
     ${selected === "again" ? "bg-black text-white" : "bg-red-300"}`}
           onClick={() => handleClick("again")}
         >
           {selected === "again" ? "✔" : "Again"}
         </button>
         <button
-          className={`hard rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`hard rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
     ${selected === "hard" ? "bg-black text-white" : "bg-orange-300"}`}
           onClick={() => handleClick("hard")}
         >
           {selected === "hard" ? "✔" : "Hard"}
         </button>
         <button
-          className={`medium rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`medium rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
     ${selected === "medium" ? "bg-black text-white" : "bg-green-300"}`}
           onClick={() => handleClick("medium")}
         >
           {selected === "medium" ? "✔" : "Ok"}
         </button>
         <button
-          className={`easy rounded flex-1 py-2 uppercase text-2xl tracking-widest transition
+          className={`easy rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
     ${selected === "easy" ? "bg-black text-white" : "bg-blue-300"}`}
           onClick={() => handleClick("easy")}
         >
