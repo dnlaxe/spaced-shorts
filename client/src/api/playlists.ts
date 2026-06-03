@@ -1,58 +1,52 @@
 import type { Playlist } from "../types/types";
 
-const API_BASE_URL = "http://localhost:3000";
+const LOCAL_STORAGE_KEY = "spaced-shorts-playlists";
+
+function readFromStorage(): Playlist[] {
+  const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+  return data ? JSON.parse(data) : [];
+}
+
+function writeToStorage(playlists: Playlist[]): void {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(playlists));
+}
 
 export async function getPlaylists(): Promise<Playlist[]> {
-  const res = await fetch(`${API_BASE_URL}/api/playlists`);
-
-  if (!res.ok) {
-    throw new Error("Fetching playlists failure");
-  }
-
-  return res.json();
+  return readFromStorage();
 }
 
 export async function updatePlaylist(
   playlistId: string,
   updates: Partial<Playlist>,
 ): Promise<Playlist> {
-  const res = await fetch(`${API_BASE_URL}/api/playlists/${playlistId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updates),
-  });
+  const playlists = readFromStorage();
+  const index = playlists.findIndex((p) => p.id === playlistId);
 
-  if (!res.ok) {
-    throw new Error("Updating playlist failed");
+  if (index === -1) {
+    throw new Error("Playlist not found");
   }
 
-  return res.json();
+  const updatedPlaylist = {
+    ...playlists[index],
+    ...updates,
+  };
+
+  playlists[index] = updatedPlaylist;
+  writeToStorage(playlists);
+
+  return updatedPlaylist;
 }
 
 export async function createPlaylist(playlist: Playlist): Promise<Playlist> {
-  const res = await fetch(`${API_BASE_URL}/api/playlists`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(playlist),
-  });
+  const playlists = readFromStorage();
+  const updatedPlaylists = [playlist, ...playlists];
+  writeToStorage(updatedPlaylists);
 
-  if (!res.ok) {
-    throw new Error("Creating playlist failed");
-  }
-
-  return res.json();
+  return playlist;
 }
 
 export async function deletePlaylist(playlistId: string): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/playlists/${playlistId}`, {
-    method: "DELETE",
-  });
-
-  if (!res.ok) {
-    throw new Error("Deleting playlist failed");
-  }
+  const playlists = readFromStorage();
+  const updatedPlaylists = playlists.filter((p) => p.id !== playlistId);
+  writeToStorage(updatedPlaylists);
 }

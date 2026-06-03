@@ -111,17 +111,17 @@ export default function PlaylistCard({
       ? `${sessionCount}`
       : nextDue
         ? `${new Date(nextDue.due).toLocaleString([], {
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          })}`
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}`
         : "";
 
   return (
     <>
-      <div className="flex flex-col bg-white">
+      <div className="playlist-card flex flex-col bg-white">
         <div className="card-top border flex flex-col p-2">
           <div className="p-2">
             {isEditing ? (
@@ -172,9 +172,8 @@ export default function PlaylistCard({
             <Link
               to="/watch"
               state={{ playlistId: playlist.id }}
-              className={`ml-2 text-sm italic ${
-                sessionCount === 0 ? "pointer-events-none" : "not-italic"
-              }`}
+              className={`ml-2 text-sm italic ${sessionCount === 0 ? "pointer-events-none" : "not-italic"
+                }`}
             >
               {sessionCount !== 0 ? "Practice " : dueLabel}
               {sessionCount !== 0 ? <span>{dueLabel}</span> : null}

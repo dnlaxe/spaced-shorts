@@ -1,10 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gveret+Levin&display=swap");
 @import "tailwindcss";
-
-@theme {
-  --font-sans: "Hanken Grotesk", sans-serif;
-}
 
 button {
   cursor: pointer;
+}
+
+.bezel-transition {
+  transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body,
+.playlist-card {
+  background-color: rgb(30, 41, 59);
+  color: rgb(241, 245, 249);
+  font-family: "Gveret Levin", cursive;
 }

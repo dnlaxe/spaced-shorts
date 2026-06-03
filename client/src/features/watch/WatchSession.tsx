@@ -19,7 +19,7 @@ export default function WatchSession({
   function handleClick(rating: Rating) {
     respond(rating);
     setSelected(rating);
-    setTimeout(() => setSelected(null), 500);
+    setTimeout(() => setSelected(null), 400);
   }
 
   const { currentShort, respond, done } = useQueueHandler(
@@ -27,6 +27,14 @@ export default function WatchSession({
     shorts,
     onComplete,
   );
+
+  const borderColors: Record<string, string> = {
+    again: "border-purple-500",
+    hard: "border-pink-500",
+    medium: "border-cyan-500",
+    easy: "border-emerald-500",
+  };
+
 
   if (done) {
     return (
@@ -39,58 +47,67 @@ export default function WatchSession({
     );
   }
 
+  const activeBorderClass = selected ? borderColors[selected] : "border-slate-600";
+
   return (
     <div
-      className={`watch-container flex flex-col flex-1 md:mb-12 md:mx-24 transition-colors duration-300 ease-out bg-black ${
-        selected === "medium" ? "bg-green-300" : ""
-      } ${selected === "easy" ? "bg-blue-300" : ""} ${
-        selected === "again" ? "bg-red-300" : ""
-      } ${selected === "hard" ? "bg-orange-300" : ""}`}
+      id="bezel"
+      className={`watch-container flex flex-col flex-1 w-full md:max-w-[500px] md:mx-auto md:mb-12 border-[6px] rounded-[30px] p-2 gap-2 bg-black font-cursive bezel-transition ${activeBorderClass}`}
     >
-      <div className="screen flex-1">
+
+      <div className="flex-grow bg-slate-800 rounded-[20px] overflow-hidden">
         <iframe
           src={`https://www.youtube.com/embed/${currentShort.id}`}
-          className={`w-full h-full p-2`}
+          className="w-full h-full"
           allowFullScreen
         />
       </div>
 
-      <div className="difficulty-buttons flex h-24 p-1 pt-0 gap-1">
+      <div className="flex gap-2 justify-between h-20">
+
+        {/* Exit */}
         <Link
           to="/playlists"
-          className="exit rounded flex-1 flex items-center justify-center text-2xl bg-gray-300"
+          className="flex-1 flex items-center justify-center bg-slate-600 border-2 border-slate-600 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
         >
           Exit
         </Link>
+
+        {/* Again */}
         <button
-          className={`again rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
-    ${selected === "again" ? "bg-black text-white" : "bg-red-300"}`}
-          onClick={() => handleClick("again")}
+          onPointerDown={() => handleClick("again")}
+          className="flex-1 bg-purple-500 border-2 border-purple-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
         >
-          {selected === "again" ? "✔" : "Again"}
+          Again
         </button>
+
+        {/* Hard */}
         <button
-          className={`hard rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
-    ${selected === "hard" ? "bg-black text-white" : "bg-orange-300"}`}
-          onClick={() => handleClick("hard")}
+          onPointerDown={() => handleClick("hard")}
+          className="flex-1 bg-pink-500 border-2 border-pink-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
         >
-          {selected === "hard" ? "✔" : "Hard"}
+          Hard
         </button>
+
+        {/* Ok */}
         <button
-          className={`medium rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
-    ${selected === "medium" ? "bg-black text-white" : "bg-green-300"}`}
-          onClick={() => handleClick("medium")}
+          onPointerDown={() => handleClick("medium")}
+          className="flex-1 bg-cyan-500 border-2 border-cyan-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
         >
-          {selected === "medium" ? "✔" : "Ok"}
+          Ok
         </button>
+
+        {/* Easy */}
         <button
-          className={`easy rounded flex-1 py-2 text-2xl transition-colors duration-300 ease-out
-    ${selected === "easy" ? "bg-black text-white" : "bg-blue-300"}`}
-          onClick={() => handleClick("easy")}
+          onPointerDown={() => handleClick("easy")}
+          className="flex-1 bg-emerald-500 border-2 border-emerald-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
         >
-          {selected === "easy" ? "✔" : "Easy"}
+          Easy
         </button>
+
+
       </div>
     </div>
   );
+
 }
