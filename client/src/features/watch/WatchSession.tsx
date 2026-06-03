@@ -68,7 +68,7 @@ export default function WatchSession({
         {/* Exit */}
         <Link
           to="/playlists"
-          className="flex-1 flex items-center justify-center bg-slate-600 border-2 border-slate-600 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
+          className="flex-1 flex items-center justify-center bg-slate-600 border-2 border-slate-600 rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Exit
         </Link>
@@ -76,7 +76,7 @@ export default function WatchSession({
         {/* Again */}
         <button
           onPointerDown={() => handleClick("again")}
-          className="flex-1 bg-purple-500 border-2 border-purple-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
+          className="flex-1 bg-purple-500 border-2 border-purple-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Again
         </button>
@@ -84,7 +84,7 @@ export default function WatchSession({
         {/* Hard */}
         <button
           onPointerDown={() => handleClick("hard")}
-          className="flex-1 bg-pink-500 border-2 border-pink-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
+          className="flex-1 bg-pink-500 border-2 border-pink-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Hard
         </button>
@@ -92,7 +92,7 @@ export default function WatchSession({
         {/* Ok */}
         <button
           onPointerDown={() => handleClick("medium")}
-          className="flex-1 bg-cyan-500 border-2 border-cyan-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
+          className="flex-1 bg-cyan-500 border-2 border-cyan-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Ok
         </button>
@@ -100,7 +100,7 @@ export default function WatchSession({
         {/* Easy */}
         <button
           onPointerDown={() => handleClick("easy")}
-          className="flex-1 bg-emerald-500 border-2 border-emerald-500 rounded-[20px] text-white font-bold text-2xl transition-transform active:scale-95"
+          className="flex-1 bg-emerald-500 border-2 border-emerald-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Easy
         </button>
