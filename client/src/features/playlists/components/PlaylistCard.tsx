@@ -166,21 +166,25 @@ export default function PlaylistCard({
           </div>
         </div>
 
-        <div className="flex py-1 px-2 items-center justify-between">
+        <div className="flex p-2 items-center justify-between">
           {playlist.shorts.length === 0 ? (
             <div className="pl-2">No shorts. Click Add to add one.</div>
           ) : (
             <Link
               to="/watch"
               state={{ playlistId: playlist.id }}
-              className={`ml-2 text-sm italic ${
+              className={`ml-2 text-sm ${
                 sessionCount === 0
                   ? "pointer-events-none"
-                  : "not-italic underline"
+                  : "border rounded-full px-2"
               }`}
             >
-              {sessionCount !== 0 ? "Practice " : dueLabel}
-              {sessionCount !== 0 ? <span>{dueLabel}</span> : null}
+              {sessionCount !== 0 ? (
+                "PRACTICE "
+              ) : (
+                <span>NEXT DUE: {dueLabel}</span>
+              )}
+              {sessionCount !== 0 ? <span>({dueLabel})</span> : null}
             </Link>
           )}
 

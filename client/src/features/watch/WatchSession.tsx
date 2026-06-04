@@ -29,12 +29,11 @@ export default function WatchSession({
   );
 
   const borderColors: Record<string, string> = {
-    again: "border-purple-500",
-    hard: "border-pink-500",
-    medium: "border-cyan-500",
-    easy: "border-emerald-500",
+    again: "border-[#FF477C]",
+    hard: "border-[#4773FF]",
+    medium: "border-[#47FF5E]",
+    easy: "border-[#FFCD47]",
   };
-
 
   if (done) {
     return (
@@ -47,14 +46,15 @@ export default function WatchSession({
     );
   }
 
-  const activeBorderClass = selected ? borderColors[selected] : "border-slate-600";
+  const activeBorderClass = selected
+    ? borderColors[selected]
+    : "border-slate-600";
 
   return (
     <div
       id="bezel"
       className={`watch-container flex flex-col flex-1 w-full md:max-w-[500px] md:mx-auto md:mb-12 border-[6px] rounded-[30px] p-2 gap-2 bg-black font-cursive bezel-transition ${activeBorderClass}`}
     >
-
       <div className="flex-grow bg-slate-800 rounded-[20px] overflow-hidden">
         <iframe
           src={`https://www.youtube.com/embed/${currentShort.id}`}
@@ -64,7 +64,6 @@ export default function WatchSession({
       </div>
 
       <div className="flex gap-2 justify-between h-20">
-
         {/* Exit */}
         <Link
           to="/playlists"
@@ -76,7 +75,7 @@ export default function WatchSession({
         {/* Again */}
         <button
           onPointerDown={() => handleClick("again")}
-          className="flex-1 bg-purple-500 border-2 border-purple-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
+          className="flex-1 bg-[#FF477C] border-2 border-[#FF477C] rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Again
         </button>
@@ -84,15 +83,15 @@ export default function WatchSession({
         {/* Hard */}
         <button
           onPointerDown={() => handleClick("hard")}
-          className="flex-1 bg-pink-500 border-2 border-pink-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
+          className="flex-1 bg-[#4773FF] border-2 border-[#4773FF] rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Hard
         </button>
 
-        {/* Ok */}
+        {/* Medium */}
         <button
           onPointerDown={() => handleClick("medium")}
-          className="flex-1 bg-cyan-500 border-2 border-cyan-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
+          className="flex-1 bg-[#47FF5E] border-2 border-[#47FF5E] rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Ok
         </button>
@@ -100,14 +99,11 @@ export default function WatchSession({
         {/* Easy */}
         <button
           onPointerDown={() => handleClick("easy")}
-          className="flex-1 bg-emerald-500 border-2 border-emerald-500 rounded-[20px] text-white font-bold transition-transform active:scale-95"
+          className="flex-1 bg-[#FFCD47] border-2 border-[#FFCD47] rounded-[20px] text-white font-bold transition-transform active:scale-95"
         >
           Easy
         </button>
-
-
       </div>
     </div>
   );
-
 }
