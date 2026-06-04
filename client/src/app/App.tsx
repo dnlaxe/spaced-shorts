@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import WatchPage from "../features/watch/WatchPage";
 import PlaylistsPage from "../features/playlists/PlaylistsPage";
 import Navbar from "../components/Navbar";
+import HomePage from "../features/home/HomePage";
 
 function AppLayout() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function AppLayout() {
       </div>
       <div className="max-w-4xl mx-auto flex flex-col flex-1 w-full">
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/watch" element={<WatchPage />} />
           <Route path="/playlists" element={<PlaylistsPage />} />
         </Routes>
