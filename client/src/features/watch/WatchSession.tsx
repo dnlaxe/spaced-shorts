@@ -39,7 +39,7 @@ export default function WatchSession({
     return (
       <div className="flex flex-col flex-1 items-center justify-center gap-6">
         <p className="text-xl">Session complete!</p>
-        <Link to="/playlists" className="border px-6 py-2">
+        <Link to="/playlists" className="border px-6 py-2 rounded-lg">
           Go back to playlists
         </Link>
       </div>

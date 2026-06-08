@@ -84,10 +84,10 @@ export default function PlaylistsPage() {
   return (
     <>
       <div className="px-4">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-4 pt-8">
           <h1 className="text-2xl">Your playlists</h1>
           <button
-            className="border px-3 py-1 rounded-full flex gap-1 items-center"
+            className="border px-3 py-1 rounded-full flex gap-1 items-center bg-[#FFCD47]"
             onClick={() =>
               createNewPlaylist({
                 id: crypto.randomUUID(),

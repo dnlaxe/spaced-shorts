@@ -122,7 +122,7 @@ export default function PlaylistCard({
   return (
     <>
       <div className="playlist-card flex flex-col bg-white rounded-lg border overflow-hidden">
-        <div className="card-top flex flex-col p-2">
+        <div className="card-top flex flex-col px-2 pt-2">
           <div className="p-2">
             {isEditing ? (
               <div className="name-playlist flex gap-2">
@@ -166,7 +166,7 @@ export default function PlaylistCard({
           </div>
         </div>
 
-        <div className="flex p-2 items-center justify-between">
+        <div className="flex py-4 px-2 items-center justify-between">
           {playlist.shorts.length === 0 ? (
             <div className="pl-2">No shorts. Click Add to add one.</div>
           ) : (
@@ -176,7 +176,7 @@ export default function PlaylistCard({
               className={`ml-2 text-sm ${
                 sessionCount === 0
                   ? "pointer-events-none"
-                  : "border rounded-full px-2"
+                  : "border rounded-full px-3 py-1 bg-[#FFCD47]"
               }`}
             >
               {sessionCount !== 0 ? (
@@ -184,7 +184,7 @@ export default function PlaylistCard({
               ) : (
                 <span>NEXT DUE: {dueLabel}</span>
               )}
-              {sessionCount !== 0 ? <span>({dueLabel})</span> : null}
+              {sessionCount !== 0 ? <span>{dueLabel}</span> : null}
             </Link>
           )}
 
@@ -253,7 +253,7 @@ export default function PlaylistCard({
         </div>
 
         {openBox === "add" && (
-          <div className="add-shorts-box p-2 flex flex-col gap-2">
+          <div className="add-shorts-box p-4 flex flex-col gap-2 border-t bg-[#F2FAFA]">
             <div className="relative add-short flex gap-2">
               <input
                 type="url"
@@ -263,10 +263,10 @@ export default function PlaylistCard({
                   setAddShortError("");
                 }}
                 placeholder="https://www.youtube.com/shorts/…"
-                className="border flex-1 p-2 pr-12"
+                className="border flex-1 p-2 pr-12 rounded-lg bg-white"
               />
               <button
-                className="border px-2 absolute right-0 top-0 bottom-0 m-1"
+                className="border px-2 absolute right-0 top-0 bottom-0 m-1 rounded-lg"
                 onClick={() => addShort(newUrl, playlist.id)}
               >
                 {addShortSaved ? (
@@ -296,7 +296,7 @@ export default function PlaylistCard({
         )}
 
         {openBox === "manage" && (
-          <div className="shorts-list-box p-2 flex flex-col gap-2">
+          <div className="shorts-list-box p-4 flex flex-col gap-2 border-t bg-[#F2FAFA]">
             <div className="px-2">
               <div className="playlist-count">
                 {playlist.shorts.length}{" "}
@@ -304,7 +304,7 @@ export default function PlaylistCard({
               </div>
             </div>
             {playlist.shorts.map((short) => (
-              <div className="add-short flex border p-2 justify-between gap-2">
+              <div className="add-short flex border p-2 justify-between gap-2 rounded-lg bg-white">
                 <span>{short.id}</span>
                 <button
                   onClick={() => deleteShortFromPlaylist(short.id, playlist.id)}
@@ -317,20 +317,20 @@ export default function PlaylistCard({
         )}
 
         {openBox === "settings" && (
-          <div className="settings-box flex p-4 gap-4">
+          <div className="settings-box flex p-4 gap-4 border-t bg-[#F2FAFA]">
             <div className="flex-1 min-w-0 flex flex-col gap-2">
               <p>New short limit: {playlist.settings.newLimit}</p>
 
               <div className="relative flex gap-2 min-w-0 items-end">
                 <input
-                  className="border flex-1 min-w-0 p-2 pr-12"
+                  className="border flex-1 min-w-0 p-2 pr-12 rounded-lg bg-white"
                   value={newLimit}
                   onChange={(e) => setNewLimit(e.target.value)}
                   placeholder="New limit:"
                 />
 
                 <button
-                  className="border flex-none px-2 absolute top-0 right-0 bottom-0 m-1"
+                  className="border flex-none px-2 absolute top-0 right-0 bottom-0 m-1 rounded-lg"
                   onClick={() => changeNewLimit(Number(newLimit), playlist.id)}
                 >
                   <PlusIcon size={18} />
@@ -343,14 +343,14 @@ export default function PlaylistCard({
 
               <div className="relative flex gap-2 min-w-0 items-end">
                 <input
-                  className="border flex-1 min-w-0 p-2 pr-12"
+                  className="border flex-1 min-w-0 p-2 pr-12 rounded-lg bg-white"
                   value={reviewLimit}
                   onChange={(e) => setReviewLimit(e.target.value)}
                   placeholder="Review limit:"
                 />
 
                 <button
-                  className="absolute border flex-none px-2 top-0 bottom-0 right-0 m-1"
+                  className="absolute border flex-none px-2 top-0 bottom-0 right-0 m-1 rounded-lg"
                   onClick={() =>
                     changeReviewLimit(Number(reviewLimit), playlist.id)
                   }
@@ -363,7 +363,7 @@ export default function PlaylistCard({
         )}
 
         {openBox === "delete" && (
-          <div className="delete-box flex py-2 px-4 gap-4 text-sm flex-row justify-between">
+          <div className="delete-box flex p-4 gap-4 text-sm flex-row justify-between border-t bg-[#F2FAFA]">
             <div className="text-base">Delete this playlist forever?</div>
             <div className="flex gap-4">
               <button
