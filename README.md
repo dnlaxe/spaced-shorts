@@ -1,5 +1,11 @@
 # YouTube Shorts Spaced Repetition
 
+## Live Demo
+
+https://spaced-shorts.vercel.app/
+
+## Description
+
 Portfolio project demonstrating frontend-focused development with React and TypeScript.
 
 A learning tool that uses YouTube Shorts with spaced repetition:

@@ -8,7 +8,7 @@ export default function HomePage() {
         <li>3. Add shorts to your playlist</li>
         <li>4. Click practice to see shorts and then decide its difficulty</li>
         <li>
-          5. Spaced repitition alogorithm will then decide when to show that
+          5. Spaced repetition algorithm will then decide when to show that
           short to you again
         </li>
       </ul>
