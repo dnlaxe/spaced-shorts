@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Rating, Short } from "../../types/types";
 import { Link } from "react-router";
-import { useQueueHandler } from "./QueueHandler";
+import { useQueueHandler } from "./useQueueHandler";
 
 type WatchSessionProps = {
   shorts: Short[];
@@ -16,17 +16,17 @@ export default function WatchSession({
 }: WatchSessionProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
-  function handleClick(rating: Rating) {
-    respond(rating);
-    setSelected(rating);
-    setTimeout(() => setSelected(null), 400);
-  }
-
   const { currentShort, respond, done } = useQueueHandler(
     allShorts,
     shorts,
     onComplete,
   );
+
+  function handleClick(rating: Rating) {
+    respond(rating);
+    setSelected(rating);
+    setTimeout(() => setSelected(null), 400);
+  }
 
   const borderColors: Record<string, string> = {
     again: "border-[#FF477C]",
@@ -56,9 +56,9 @@ export default function WatchSession({
   return (
     <div
       id="bezel"
-      className={`watch-container flex flex-col flex-1 w-full md:max-w-[500px] md:mx-auto md:mb-12 border-[6px] rounded-[30px] p-1 gap-1 bg-black font-cursive bezel-transition ${activeBorderClass}`}
+      className={`watch-container flex flex-col flex-1 w-full md:max-w-125 md:mx-auto md:mb-12 border-[6px] rounded-[30px] p-1 gap-1 bg-black font-cursive bezel-transition ${activeBorderClass}`}
     >
-      <div className="flex-grow bg-slate-800 rounded-t-[20px] overflow-hidden">
+      <div className="grow bg-slate-800 rounded-t-[20px] overflow-hidden">
         <iframe
           src={`https://www.youtube.com/embed/${currentShort.id}`}
           className="w-full h-full"
@@ -67,7 +67,6 @@ export default function WatchSession({
       </div>
 
       <div className="flex gap-1 justify-between h-20 text-xl">
-        {/* Exit */}
         <Link
           to="/playlists"
           className="flex-1 flex items-center justify-center bg-slate-600 border-2 border-slate-600 rounded-bl-[20px] text-white font-bold transition-transform active:scale-95"
@@ -75,7 +74,6 @@ export default function WatchSession({
           Exit
         </Link>
 
-        {/* Again */}
         <button
           onPointerDown={() => handleClick("again")}
           className="flex-1 bg-[#FF477C] border-2 border-[#FF477C] text-white font-bold transition-transform active:scale-95"
@@ -83,7 +81,6 @@ export default function WatchSession({
           Again
         </button>
 
-        {/* Hard */}
         <button
           onPointerDown={() => handleClick("hard")}
           className="flex-1 bg-[#4773FF] border-2 border-[#4773FF] text-white font-bold transition-transform active:scale-95"
@@ -91,7 +88,6 @@ export default function WatchSession({
           Hard
         </button>
 
-        {/* Medium */}
         <button
           onPointerDown={() => handleClick("medium")}
           className="flex-1 bg-[#47FF5E] border-2 border-[#47FF5E] text-white font-bold transition-transform active:scale-95"
@@ -99,7 +95,6 @@ export default function WatchSession({
           Ok
         </button>
 
-        {/* Easy */}
         <button
           onPointerDown={() => handleClick("easy")}
           className="flex-1 bg-[#FFCD47] border-2 border-[#FFCD47] rounded-br-[20px] text-white font-bold transition-transform active:scale-95"

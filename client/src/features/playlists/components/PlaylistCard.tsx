@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import extractShortId from "../extractShortId";
 import type { Playlist } from "../../../types/types";
-import { buildSessionShorts } from "../../../lib/session";
+import { buildSessionShorts } from "../../../lib/buildSession";
 import {
   CheckIcon,
   GearIcon,
@@ -44,6 +44,8 @@ export default function PlaylistCard({
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [addShortError, setAddShortError] = useState<string>("");
   const [addShortSaved, setAddShortSaved] = useState(false);
+  const [newLimitError, setNewLimitError] = useState<string>("");
+  const [newReviewLimitError, setNewReviewLimitError] = useState<string>("");
 
   const [now] = useState(() => Date.now());
 
@@ -77,11 +79,24 @@ export default function PlaylistCard({
   }
 
   function changeNewLimit(newLimit: number, playlistId: string) {
+    if (Number.isNaN(newLimit)) {
+      setNewLimitError("Please enter a number");
+      return;
+    }
+
+    setNewLimitError("");
     console.log(`Changing new limit to ${newLimit}`);
+
     onUpdateNewLimit(newLimit, playlistId);
   }
 
   function changeReviewLimit(reviewLimit: number, playlistId: string) {
+    if (Number.isNaN(reviewLimit)) {
+      setNewReviewLimitError("Please enter a number");
+      return;
+    }
+
+    setNewReviewLimitError("");
     console.log(`Changing review limit to ${reviewLimit}`);
     onUpdateReviewLimit(reviewLimit, playlistId);
   }
@@ -254,28 +269,32 @@ export default function PlaylistCard({
 
         {openBox === "add" && (
           <div className="add-shorts-box p-4 flex flex-col gap-2 border-t bg-[#F2FAFA]">
-            <div className="relative add-short flex gap-2">
-              <input
-                type="url"
-                value={newUrl}
-                onChange={(e) => {
-                  setNewUrl(e.target.value);
-                  setAddShortError("");
-                }}
-                placeholder="https://www.youtube.com/shorts/…"
-                className="border flex-1 p-2 pr-12 rounded-lg bg-white"
-              />
-              <button
-                className="border px-2 absolute right-0 top-0 bottom-0 m-1 rounded-lg"
-                onClick={() => addShort(newUrl, playlist.id)}
-              >
-                {addShortSaved ? (
-                  <CheckIcon size={18} />
-                ) : (
-                  <PlusIcon size={18} />
-                )}
-              </button>
-              {addShortError !== "" && <p>{addShortError}</p>}
+            <div>
+              <div className="relative add-short flex gap-2">
+                <input
+                  type="url"
+                  value={newUrl}
+                  onChange={(e) => {
+                    setNewUrl(e.target.value);
+                    setAddShortError("");
+                  }}
+                  placeholder="https://www.youtube.com/shorts/…"
+                  className="border flex-1 p-2 pr-12 rounded-lg bg-white"
+                />
+                <button
+                  className="border px-2 absolute right-0 top-0 bottom-0 m-1 rounded-lg"
+                  onClick={() => addShort(newUrl, playlist.id)}
+                >
+                  {addShortSaved ? (
+                    <CheckIcon size={18} />
+                  ) : (
+                    <PlusIcon size={18} />
+                  )}
+                </button>
+              </div>
+              {addShortError !== "" && (
+                <p className="mt-2 text-[#FF477C]">{addShortError}</p>
+              )}
             </div>
             {/* <div className="add-playlist flex gap-2">
               <input
@@ -325,7 +344,10 @@ export default function PlaylistCard({
                 <input
                   className="border flex-1 min-w-0 p-2 pr-12 rounded-lg bg-white"
                   value={newLimit}
-                  onChange={(e) => setNewLimit(e.target.value)}
+                  onChange={(e) => {
+                    setNewLimitError("");
+                    setNewLimit(e.target.value);
+                  }}
                   placeholder="New limit:"
                 />
 
@@ -336,6 +358,10 @@ export default function PlaylistCard({
                   <PlusIcon size={18} />
                 </button>
               </div>
+
+              {newLimitError != "" && (
+                <p className="text-[#FF477C]">{newLimitError}</p>
+              )}
             </div>
 
             <div className="flex-1 min-w-0 flex flex-col gap-2">
@@ -345,7 +371,10 @@ export default function PlaylistCard({
                 <input
                   className="border flex-1 min-w-0 p-2 pr-12 rounded-lg bg-white"
                   value={reviewLimit}
-                  onChange={(e) => setReviewLimit(e.target.value)}
+                  onChange={(e) => {
+                    setNewReviewLimitError("");
+                    setReviewLimit(e.target.value);
+                  }}
                   placeholder="Review limit:"
                 />
 
@@ -358,6 +387,9 @@ export default function PlaylistCard({
                   <PlusIcon size={18} />
                 </button>
               </div>
+              {newReviewLimitError != "" && (
+                <p className="text-[#FF477C]">{newReviewLimitError}</p>
+              )}
             </div>
           </div>
         )}

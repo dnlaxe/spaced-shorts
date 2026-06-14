@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router";
 import type { Short } from "../../types/types";
 import { useState } from "react";
-import { buildSessionShorts } from "../../lib/session";
+import { buildSessionShorts } from "../../lib/buildSession";
 import usePlaylists from "../../hooks/usePlaylists";
 import WatchSession from "./WatchSession";
 
