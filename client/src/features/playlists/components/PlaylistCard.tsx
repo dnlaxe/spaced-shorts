@@ -79,8 +79,8 @@ export default function PlaylistCard({
   }
 
   function changeNewLimit(newLimit: number, playlistId: string) {
-    if (Number.isNaN(newLimit)) {
-      setNewLimitError("Please enter a number");
+    if (Number.isNaN(newLimit) || newLimit < 0 || newLimit > 99) {
+      setNewLimitError("Please enter a number between 1 and 99");
       return;
     }
 
@@ -91,8 +91,8 @@ export default function PlaylistCard({
   }
 
   function changeReviewLimit(reviewLimit: number, playlistId: string) {
-    if (Number.isNaN(reviewLimit)) {
-      setNewReviewLimitError("Please enter a number");
+    if (Number.isNaN(reviewLimit) || reviewLimit < 0 || reviewLimit > 99) {
+      setNewReviewLimitError("Please enter a number between 1 and 99");
       return;
     }
 
@@ -107,7 +107,7 @@ export default function PlaylistCard({
   }
 
   function renamePlaylist(newTitle: string, playlistId: string) {
-    console.log(`Renaming ${playlist.title} t0 ${newTitle}`);
+    console.log(`Renaming ${playlist.title} to ${newTitle}`);
     onRenamePlaylist(newTitle, playlistId);
   }
 
@@ -181,7 +181,7 @@ export default function PlaylistCard({
           </div>
         </div>
 
-        <div className="flex py-4 px-2 items-center justify-between">
+        <div className="flex pb-4 px-2 items-center justify-between">
           {playlist.shorts.length === 0 ? (
             <div className="pl-2">No shorts. Click Add to add one.</div>
           ) : (
@@ -352,8 +352,9 @@ export default function PlaylistCard({
                 />
 
                 <button
-                  className="border flex-none px-2 absolute top-0 right-0 bottom-0 m-1 rounded-lg"
+                  className="border flex-none px-2 absolute top-0 right-0 bottom-0 m-1 rounded-lg disabled:opacity-50"
                   onClick={() => changeNewLimit(Number(newLimit), playlist.id)}
+                  disabled={newLimit.trim().length === 0}
                 >
                   <PlusIcon size={18} />
                 </button>
@@ -379,10 +380,11 @@ export default function PlaylistCard({
                 />
 
                 <button
-                  className="absolute border flex-none px-2 top-0 bottom-0 right-0 m-1 rounded-lg"
+                  className="absolute border flex-none px-2 top-0 bottom-0 right-0 m-1 rounded-lg disabled:opacity-50"
                   onClick={() =>
                     changeReviewLimit(Number(reviewLimit), playlist.id)
                   }
+                  disabled={reviewLimit.trim().length === 0}
                 >
                   <PlusIcon size={18} />
                 </button>
